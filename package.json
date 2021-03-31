@@ -17,7 +17,11 @@
   },
   "homepage": "https://github.com/nthung2411/nodejs-graphql-know-how#readme",
   "dependencies": {
+    "@prisma/client": "^2.20.1",
     "apollo-server": "^2.22.1",
     "graphql": "^15.5.0"
+  },
+  "devDependencies": {
+    "prisma": "^2.20.1"
   }
 }
