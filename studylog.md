@@ -94,3 +94,52 @@ main()
 - update `index.js` to consume `prisma client`
 - `npx prisma studio` to view database in `http://localhost:5555`
 - install `prisma` extension for autoformat and autocomplete.
+- add model `User` and relation of `User` to model `Link`
+- update migration script, `npx prisma migrate dev --name "add-user-model"`
+- `npx prisma generate`
+
+## Authentication
+- move `Query`, `Mutation`, `User`, `Link` into their own file inside `resolvers` folder.
+- `npm install jsonwebtoken bcryptjs`
+- add data to `Link.js`
+- add data to `User.js`
+- adapt `Mutation.js`, add `postedBy` property.
+### test authentication
+- signup
+```graphql
+mutation {
+  signup(name: "Alice", email: "alice@prisma.io", password: "graphql") {
+    token
+    user {
+      id
+    }
+  }
+}
+```
+- signin
+```graphql
+mutation {
+  login(email: "alice@prisma.io", password: "graphql") {
+    token
+    user {
+      id
+    }
+  }
+}
+```
+- open `HTTP HEADERS`, add `Authorization` as following
+- replace `__TOKEN__` with token data from previous mutation.
+```json
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTYxNzIwNjc1M30.6ZCAuApW0NaLlaEGjjXTUVXqIqyVR-r0zjajgC9C83c
+{
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTYxNzIwNjc1M30.6ZCAuApW0NaLlaEGjjXTUVXqIqyVR-r0zjajgC9C83c"
+}
+```
+- create `post` with authentication header
+```graphql
+mutation {
+  post(url: "www.graphqlconf.org", description: "An awesome GraphQL conference") {
+    id
+  }
+}
+```
